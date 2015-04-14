@@ -1,7 +1,7 @@
-
 epa_read <- function(f_name) {
 
 	datos <- read.fwf(f_name,
+	# These are the column names of the variables following the EPA dictionary
 	col.names = c("ciclo","ccaa","prov","nvivi","nivel","npers","edad5", 		
 	"relpp1","sexo1","ncony","npadre","nmadre","rellmili","eciv1","prona",
 	"regna1","nac1", "exregna1","anore1","nforma","rellb","edadest","cursr",
@@ -15,6 +15,7 @@ epa_read <- function(f_name) {
 	"rzndis","empant","dtant","ocupa","acta","situa","ofemp","sidi1","sidi2",
 	"sidi3","sidac1","sidac2","mun1","prore1","repaire1","traant","aoi","cse","factorel"),
 
+	# Widths
 	widths=c(3,2,2,5,1,2,2,1,1,2,2,2,1,1,2,3,1,3,2,2,2,3,1,2,1,2,3,2,  # until RELLB
 	1,1,1,2,2,1,1,1,2,1,1,1,2,2,2,3,3,
 	2,3,1,2, 2,2, 2,2, 2,2, 1, 2,2, 2,2, 2,1,1,1,2, 2,2, 1,1,2,2,1,  # until BUSOTR
@@ -22,16 +23,22 @@ epa_read <- function(f_name) {
 	1,3,1,1,2,1,2,2,2,1,1,	# SIDAC2
 	1,2,3,1,2,2,7))
 
+	#"rellenos" (not used)
 	datos$rellmili<- NULL
 	datos$rellb <- NULL
 	datos$rellb2 <- NULL
+	
+	# "factor elevacion" includes two decimal points
 	datos$factorel<- datos$factorel/100
 
+	# Take the name from the file you supplied
 	f_name<-unlist(strsplit(f_name,split=".",fixed=TRUE))[1]
 	file_str<-paste(f_name,"_f",".csv",sep="")
+	
+	# ... and save it
 	write.csv(datos, file=file_str )
 
-
-cat(paste0("File ","'",file_str,"'"," saved."),"\n")
+	# Some output so we know we're done
+	cat(paste0("File ","'",file_str,"'"," saved."),"\n")
 
 }
